@@ -19,6 +19,20 @@ public class User {
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
+    @OneToOne(mappedBy = "userReviewer")
+    private Task reviewedTask;
+
+    @OneToOne(mappedBy = "userCreator")
+    private Task createdTask;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_task",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "project_id")}
+    )
+    private Set<Task> tasks = new HashSet<>();
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -74,5 +88,21 @@ public class User {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    public Task getCreatedTask() {
+        return createdTask;
+    }
+
+    public void setCreatedTask(Task createdTask) {
+        this.createdTask = createdTask;
+    }
+
+    public Set<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
     }
 }

@@ -2,6 +2,8 @@ package com.train.taskmanager.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "project")
@@ -17,6 +19,9 @@ public class Project {
     private String description;
     @Column(name = "time_spent")
     private LocalDateTime timeSpent;
+
+    @OneToMany(mappedBy = "project")
+    private Set<Task> tasks = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -48,5 +53,13 @@ public class Project {
 
     public void setTimeSpent(LocalDateTime timeSpent) {
         this.timeSpent = timeSpent;
+    }
+
+    public Set<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
     }
 }

@@ -2,6 +2,8 @@ package com.train.taskmanager.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "task")
@@ -15,8 +17,14 @@ public class Task {
     private String description;
     @Column(name = "title", nullable = false, length = 255)
     private String title;
-    @Column(name = "user_creator_id", nullable = false)
-    private Long userCreatorID;
+
+    @OneToOne
+    @JoinTable(name = "usercreator_task",
+        joinColumns = {@JoinColumn(name = "task_id", referencedColumnName = "task_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")}
+    )
+    private User userCreator;
+
     @Column(name = "estimate", nullable = false)
     private String estimate;
     @Column(name = "spent_time")
@@ -25,14 +33,28 @@ public class Task {
     private LocalDateTime start_time;
     @Column(name = "finish_time")
     private LocalDateTime finish_time;
-    @Column(name = "user_reviewer_id")
-    private Long userReviewerId;
-    @Column(name = "status", nullable = false)
-    private Status status;
+
+    @OneToOne
+    @JoinTable(name = "userreviewer_task",
+            joinColumns = {@JoinColumn(name = "task_id", referencedColumnName = "task_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "user_id")}
+    )
+    private User userReviewer;
+
+    @ManyToMany(mappedBy = "tasks")
+    private Set<User> users = new HashSet<>();
+
+    @ElementCollection(targetClass = Status.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "task_status", joinColumns = @JoinColumn(name = "task_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Status> status = new HashSet<>();
+
     @Column(name = "last_update", nullable = false)
     private LocalDateTime lastUpdate;
-    @Column(name = "project_id", nullable = false)
-    private Long projectId;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
 
     public Long getId() {
         return id;
@@ -58,12 +80,32 @@ public class Task {
         this.title = title;
     }
 
-    public Long getUserCreatorID() {
-        return userCreatorID;
+    public User getUserCreator() {
+        return userCreator;
     }
 
-    public void setUserCreatorID(Long userCreatorID) {
-        this.userCreatorID = userCreatorID;
+    public void setUserCreator(User userCreator) {
+        this.userCreator = userCreator;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public void setStatus(Set<Status> status) {
+        this.status = status;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 
     public String getEstimate() {
@@ -98,20 +140,16 @@ public class Task {
         this.finish_time = finish_time;
     }
 
-    public Long getUserReviewerId() {
-        return userReviewerId;
+    public User getUserReviewer() {
+        return userReviewer;
     }
 
-    public void setUserReviewerId(Long userReviewerId) {
-        this.userReviewerId = userReviewerId;
+    public void setUserReviewer(User userReviewer) {
+        this.userReviewer = userReviewer;
     }
 
-    public Status getStatus() {
+    public Set<Status> getStatus() {
         return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public LocalDateTime getLastUpdate() {
@@ -120,13 +158,5 @@ public class Task {
 
     public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
     }
 }
