@@ -25,7 +25,6 @@ CREATE TABLE IF NOT EXISTS `task_manager`.`user` (
   `email` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
   `team_id` INT NOT NULL,
-  `user_role` INT NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC) VISIBLE,
   INDEX `fk_user_team_idx` (`team_id` ASC) VISIBLE,
@@ -33,11 +32,6 @@ CREATE TABLE IF NOT EXISTS `task_manager`.`user` (
     FOREIGN KEY (`team_id`)
     REFERENCES `task_manager`.`team` (`team_id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_role`
-    FOREIGN KEY (`user_role`)
-    REFERENCES `task_manager`.`role` (`role_id`)
-    ON DELETE NO ACTION 
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -113,28 +107,20 @@ CREATE TABLE IF NOT EXISTS `task_manager`.`user_task` (
 ENGINE = InnoDB;
 
 
-CREATE TABLE IF NO EXISTS `task_manager`.`user_project` (
-  `user_id` INT NOT NULL,
-  `project_id` INT NOT NULL,
-  PRIMARY KEY (`user_id`, `project_id`),
-  INDEX `fk_user_has_project_user1_idx` (`user_id`, ASC) VISIBLE,
-  INDEX `fk_user_has_project_project1_idx` (`project_id`, ASC) VISIBLE,
-  CONSTRAINT `fk_user_has_project_user1_idx`
+CREATE TABLE IF NOT EXISTS `task_manager`.`user_project` (
+    `user_id` INT NOT NULL,
+    `project_id` INT NOT NULL,
+    PRIMARY KEY (`user_id`, `project_id`),
+    INDEX `fk_user_has_project_user1_idx` (`user_id` ASC) VISIBLE,
+    INDEX `fk_user_has_project_project1_idx` (`project_id` ASC) VISIBLE,
+    CONSTRAINT `fk_user_has_project_user1_idx`
     FOREIGN KEY (`user_id`)
     REFERENCES `task_manager`.`user` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_has_project_project1_idx`
+    CONSTRAINT `fk_user_has_project_project1_idx`
     FOREIGN KEY (`project_id`)
     REFERENCES `task_manager`.`project` (`project_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `task_manager`.`role` (
-  `role_id` INT NOT NULL AUTO_INCREMENT,
-  `role` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`role_id`),
-  UNIQUE INDEX `role_id_UNIQUE` (`role_id`, ASC) VISIBLE
-)ENGINE = InnoDB;
+    ENGINE = InnoDB;

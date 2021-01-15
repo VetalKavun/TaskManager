@@ -1,6 +1,8 @@
 package com.train.taskmanager.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -16,10 +18,15 @@ public class User {
     private String email;
     @Column(name = "password", nullable = false, length = 255)
     private String password;
-    @Column(name = "team_id", nullable = false)
-    private Long teamId;
-    @Column(name = "user_role")
-    private Role userRole;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> userRoles = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "team_id", nullable = false)
+    private Team team;
 
     public Long getId() {
         return id;
@@ -53,19 +60,19 @@ public class User {
         this.password = password;
     }
 
-    public Long getTeamId() {
-        return teamId;
+    public Set<Role> getUserRoles() {
+        return userRoles;
     }
 
-    public void setTeamId(Long teamId) {
-        this.teamId = teamId;
+    public void setUserRoles(Set<Role> userRoles) {
+        this.userRoles = userRoles;
     }
 
-    public Role getUserRole() {
-        return userRole;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setUserRole(Role userRole) {
-        this.userRole = userRole;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }

@@ -11,7 +11,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id", nullable = false)
     private Long id;
-    @Column(name = "description", nullable = false, columnDefinition = "meduimtext")
+    @Column(name = "description", nullable = false, length = 16777215)
     private String description;
     @Column(name = "title", nullable = false, length = 255)
     private String title;
