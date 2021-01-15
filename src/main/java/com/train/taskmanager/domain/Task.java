@@ -1,20 +1,37 @@
 package com.train.taskmanager.domain;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "task")
 public class Task {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "task_id", nullable = false)
     private Long id;
+    @Column(name = "description", nullable = false, columnDefinition = "meduimtext")
     private String description;
+    @Column(name = "title", nullable = false, length = 255)
     private String title;
+    @Column(name = "user_creator_id", nullable = false)
     private Long userCreatorID;
+    @Column(name = "estimate", nullable = false)
     private String estimate;
+    @Column(name = "spent_time")
     private LocalDateTime spent_time;
+    @Column(name = "start_time")
     private LocalDateTime start_time;
+    @Column(name = "finish_time")
     private LocalDateTime finish_time;
+    @Column(name = "user_reviewer_id")
     private Long userReviewerId;
+    @Column(name = "status", nullable = false)
     private Status status;
+    @Column(name = "last_update", nullable = false)
     private LocalDateTime lastUpdate;
+    @Column(name = "project_id", nullable = false)
     private Long projectId;
 
     public Long getId() {

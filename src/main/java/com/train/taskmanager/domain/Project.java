@@ -1,12 +1,21 @@
 package com.train.taskmanager.domain;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "project")
 public class Project {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "project_id" ,nullable = false)
     private Long id;
+    @Column(name = "title", nullable = false)
     private String title;
+    @Column(name = "description")
     private String description;
+    @Column(name = "time_spent")
     private LocalDateTime timeSpent;
 
     public Long getId() {

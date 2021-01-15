@@ -1,9 +1,18 @@
 package com.train.taskmanager.domain;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "team")
 public class Team {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "team_id", nullable = false)
     private Long id;
+    @Column(name = "title", nullable = false, length = 255)
     private String title;
+    @Column(name = "description", nullable = false, columnDefinition = "mediumtext")
     private String description;
 
     public Long getId() {
