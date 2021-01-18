@@ -49,7 +49,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Set<Status> status = new HashSet<>();
 
-    @Column(name = "last_update", nullable = false)
+    @Column(name = "last_update")
     private LocalDateTime lastUpdate;
 
     @ManyToOne

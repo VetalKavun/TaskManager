@@ -11,7 +11,7 @@ public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "project_id" ,nullable = false)
+    @Column(name = "project_id", nullable = false)
     private Long id;
     @Column(name = "title", nullable = false)
     private String title;
@@ -22,6 +22,9 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     private Set<Task> tasks = new HashSet<>();
+
+    @OneToMany(mappedBy = "project")
+    private Set<User> users = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -61,5 +64,13 @@ public class Project {
 
     public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }

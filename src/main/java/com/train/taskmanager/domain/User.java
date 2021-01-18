@@ -29,7 +29,7 @@ public class User {
     @JoinTable(
             name = "user_task",
             joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "project_id")}
+            inverseJoinColumns = {@JoinColumn(name = "task_id")}
     )
     private Set<Task> tasks = new HashSet<>();
 
@@ -41,6 +41,10 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
 
     public Long getId() {
         return id;
@@ -104,5 +108,21 @@ public class User {
 
     public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public Task getReviewedTask() {
+        return reviewedTask;
+    }
+
+    public void setReviewedTask(Task reviewedTask) {
+        this.reviewedTask = reviewedTask;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }
